@@ -13,7 +13,7 @@ in {
     ./rofi/config-emoji.nix
     ./rofi/config-long.nix
     ./swaync.nix
-    ./${hyprlandbar}.${bartheme}.nix
+    ./${hyprlandbar}.${bartheme}/default.nix
     ./wlogout.nix
   ];
 

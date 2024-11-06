@@ -98,10 +98,10 @@ in {
     # base0E = "B48EAD";
     # base0F = "5E81AC";
     # };
-    # opacity.terminal = 0.9;
-    # cursor.package = pkgs.bibata-cursors;
-    # cursor.name = "Bibata-Modern-Ice";
-    # cursor.size = 24;
+    opacity.terminal = 0.9;
+    cursor.package = pkgs.bibata-cursors;
+    cursor.name = "Bibata-Modern-Ice";
+    cursor.size = 24;
     fonts = {
       monospace = {
         package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
@@ -196,8 +196,8 @@ in {
     micro
     xsel
     xwayland
-    # vscodium
-    vscode
+    vscodium
+    #vscode
     wget
     killall
     eza
