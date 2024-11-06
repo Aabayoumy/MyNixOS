@@ -20,6 +20,7 @@
       update = "nix-channel --update && nix-env -u";
       weather = "curl v2.wttr.in";
     };
+
     oh-my-zsh = {
       # 2023-07-28: oh-my-zsh doesn't have a plugin that shows me the exit code if it was not 0 (I'd probably have to define my own prompt)
       enable = true;
@@ -49,6 +50,7 @@
       [ $(\tmux ls | grep -w "$(whoami)" | grep -cw attached) -eq 0 ] &&
       $( $(systemd-run --scope --user echo 2>/dev/null) && echo -n systemd-run --scope --user) \tmux new -A -s "$(whoami)" && exit
       fastfetch
+      gacp () {  git add -A && git commit -m "$*" && git push; }
     '';
   };
 

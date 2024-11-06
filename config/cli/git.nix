@@ -19,7 +19,7 @@ in {
       # ];
     };
     aliases = {
-      acp = "add -A && commit -m '$@' && push";
+      # acp = "add -A && commit -m '$@' && push";
     };
   };
 }
