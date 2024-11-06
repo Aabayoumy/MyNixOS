@@ -2,6 +2,7 @@
   config,
   pkgs,
   host,
+  lib,
   username,
   options,
   ...
@@ -137,7 +138,6 @@ in {
   # Set your time zone.
   time.timeZone = "Africa/Cairo";
 
-  services.timesyncd.enable = true;
   security.sudo.wheelNeedsPassword = false;
 
   # Select internationalisation properties.
@@ -156,6 +156,7 @@ in {
   };
 
   programs = {
+    hyprland.enable = true;
     firefox.enable = false;
     nix-ld = {
       enable = true;
@@ -261,8 +262,8 @@ in {
     rsync
     dtrx
     base16-schemes
-    sddm
-    clairvoyance                        # SDDM greeter theme
+    sddm-kcm
+    elegant-sddm
   ];
 
   fonts = {
@@ -328,26 +329,22 @@ in {
   # Services to start
   services = {
     xserver = {
-      enable = true;
-      displayManager = {
-        sessionCommands = ''
-          xmodmap .Xmodmap
-          xmodmap -e "keycode 110 = Prior"
-          xmodmap -e "keycode 115 = Next"
-          xmodmap -e "keycode 112 = Home"
-          xmodmap -e "keycode 117 = End"
-        '';
-        sddm.enable = true;             # Login screen manager
-        sddm.theme = "clairvoyance";    # Clairvoyance theme for sddm
-        #sddm.settings = ''
-        #  [General]
-        #  InputMethod=
-        #'';
-      };
+      enable = false;
       xkb = {
         layout = "us,ara";
         variant = "digits";
         options = "alt_shift_toggle,caps:escape";
+      };
+    };
+    displayManager = {
+      sddm = {
+        enable = true;
+        theme = "Elegant";
+        autoNumlock = true;
+        wayland = {
+          enable = true;
+          compositor = "kwin";
+        };
       };
     };
     greetd = {
@@ -368,6 +365,7 @@ in {
       enable = false;
       autodetect = true;
     };
+    timesyncd.enable = true;
     libinput.enable = true;
     fstrim.enable = true;
     gvfs.enable = true;
