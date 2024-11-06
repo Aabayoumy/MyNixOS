@@ -45,7 +45,7 @@ in
             source = ~/.config/hypr/monitors.conf
             source = ~/.config/hypr/workspaces.conf
             source = ~/.config/hypr/input.conf
-            # source = ~/.config/hypr/scratchpads.conf
+            source = ~/.config/hypr/scratchpads.conf
 
             exec-once = systemctl --user import-environment &
             exec-once = hash dbus-update-activation-environment 2>/dev/null &
@@ -87,14 +87,6 @@ in
             #   accel_profile = flat
             # }
 
-            $scratchpadsize = size 80% 85%
-            $scratch_term = class:^(scratch_term)$
-            windowrulev2 = float,$scratch_term
-            windowrulev2 = $scratchpadsize,$scratch_term
-            windowrulev2 = workspace special:scratch_term ,$scratch_term
-            windowrulev2 = center,$scratch_term
-
-
             windowrule = noborder,^(wofi)$
             windowrule = center,^(wofi)$
             windowrule = center,^(steam)$
@@ -102,7 +94,7 @@ in
             windowrule = float, swayimg|vlc|Viewnior|pavucontrol
             windowrule = float, nwg-look|qt5ct|mpv
             windowrule = float, zoom
-            windowrule = float, title:^(Bitwarden)$
+            windowrulev2 = float, title:^(Extension: (Bitwarden Password Manager) - Bitwarden — LibreWolf)$
             #windowrulev2 = float,class:^(org.wezfurlong.wezterm)$
             windowrulev2 = stayfocused, title:^()$,class:^(steam)$
             windowrulev2 = minsize 1 1, title:^()$,class:^(steam)$
@@ -154,9 +146,6 @@ in
               preserve_split = true
             }
             bind = ${modifier},Return,exec,${terminal}
-            bind = ${modifier},SPACE,exec, if hyprctl clients | grep scratch_term; then echo "scratch_term respawn not needed" ; else ${terminal} --class scratch_term; fi
-            bind = ${modifier},SPACE,togglespecialworkspace,scratch_term
-            # [workspace special] ${terminal} --class scratch_term
             bind = ${modifier},Super_L,exec, killall rofi || rofi -show drun
             bind = ${modifier},W, exec, waypaper
             bind = ${modifier} SHIFT,W,exec,wallsetter
@@ -205,8 +194,6 @@ in
             bind = ${modifier},8,workspace,8
             bind = ${modifier},9,workspace,9
             bind = ${modifier},0,workspace,10
-            # bind = ${modifier} SHIFT,SPACE,movetoworkspace,special
-            # bind = ${modifier},SPACE,togglespecialworkspace
             bind = ${modifier} SHIFT,1,movetoworkspace,1
             bind = ${modifier} SHIFT,2,movetoworkspace,2
             bind = ${modifier} SHIFT,3,movetoworkspace,3

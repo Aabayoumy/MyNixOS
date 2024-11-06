@@ -8,7 +8,7 @@ in {
   imports = [
     ./emoji.nix
     ./hyprland.nix
-    # ./pyprland.nix
+    ./pyprland.nix
     ./rofi/rofi.nix
     ./rofi/config-emoji.nix
     ./rofi/config-long.nix

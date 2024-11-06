@@ -62,8 +62,6 @@ in
         animation = "fromTop"
         command = "[term_classed] main-dropterm"
         class = "main-dropterm"
-        # size = "98% 90%"
-        # max_size = "1920px 100%"
         unfocus = "hide"
         margin = 50
         lazy = true
@@ -80,19 +78,29 @@ in
           $pyprland = ''
         + config.programs.pyprland.package
         + ''          /bin/pypr
-          exec-once = $pyprland --debug /tmp/pypr.log
-          bind = SUPER SHIFT, RETURN, exec, $pyprland toggle term                  # toggles the "term" scratchpad visibility
-          bind = SUPER CTRL, V, exec, $pyprland toggle volume && hyprctl dispatch bringactivetotop
+                              exec-once = $pyprland --debug /tmp/pypr.log
+                              bind = SUPER,SPACE, exec, $pyprland toggle term                  # toggles the "term" scratchpad visibility
+                              bind = SUPER CTRL, V, exec, $pyprland toggle volume && hyprctl dispatch bringactivetotop
 
-          $scratchpadsize = size 98% 95%
-          $scratchpad = class:^(main-dropterm)$
-          windowrulev2 = float,$scratchpad
-          windowrulev2 = $scratchpadsize.$scratchpad
-          windowrulev2 = workspace special silent,$scratchpad
-          windowrulev2 = center,$scratchpad
+                              $scratchpadsize = size 80% 85%
+                              $scratchpad = class:^(main-dropterm)$
+                              windowrulev2 = float,$scratchpad
+                              windowrulev2 = $scratchpadsize.$scratchpad
+                              windowrulev2 = workspace special silent,$scratchpad
+                              windowrulev2 = center,$scratchpad
 
-          windowrulev2 = float,class:^(org.pulseaudio.pavucontrol)$
-          # windowrulev2 = workspace special silent,class:^(pavucontrol)$
+                              windowrulev2 = float,class:^(org.pulseaudio.pavucontrol)$
+                              # windowrulev2 = workspace special silent,class:^(pavucontrol)$
+
+                              # bind = SUPER,SPACE,exec, if hyprctl clients | grep scratch_term; then echo "scratch_term respawn not needed" ; else ${terminal} --class scratch_term; fi
+                              # bind = SUPER,SPACE,togglespecialworkspace,scratch_term
+
+
+                              $scratch_term = class:^(scratch_term)$
+                              windowrulev2 = float,$scratch_term
+                              windowrulev2 = $scratchpadsize,$scratch_term
+                              windowrulev2 = workspace special:scratch_term ,$scratch_term
+                              windowrulev2 = center,$scratch_term
 
         '';
     };
