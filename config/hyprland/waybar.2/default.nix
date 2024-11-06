@@ -1,8 +1,8 @@
-{ config
-, pkgs
-, ...
-}:
 {
+  config,
+  pkgs,
+  ...
+}: {
   programs = {
     waybar = {
       enable = true;
@@ -14,9 +14,9 @@
           margin-top = 5;
           margin-left = 10;
           margin-right = 10;
-          modules-left = [ "custom/nix" "custom/music" "mpris" "cpu" "memory" "hyprland/window" "hyprland/workspaces" ];
-          modules-center = [ ];
-          modules-right = [ "clock" "hyprland/language" "keyboard-state" "wireplumber" "bluetooth" "network" "custom/hyprpicker" "custom/screenshot" "custom/nix-clean" ];
+          modules-left = ["custom/nix" "custom/music" "mpris" "cpu" "memory" "hyprland/window" "hyprland/workspaces"];
+          modules-center = [];
+          modules-right = ["clock" "hyprland/language" "keyboard-state" "wireplumber" "bluetooth" "network" "custom/hyprpicker" "custom/screenshot" "custom/nix-clean"];
           mpris = {
             player = "cider";
             interval = 1;
@@ -40,7 +40,7 @@
             format = " {used:0.1f} GB/{total:0.1f} GB";
             tooltip = false;
             interval = 1;
-           };
+          };
           clock = {
             format = " {:%H:%M}";
             tooltip = true;
@@ -58,7 +58,7 @@
             };
           };
           wireplumber = {
-            format-icons = [ "" "" "" ];
+            format-icons = ["" "" ""];
             format = "{icon}";
             format-muted = "󰝟";
             scroll-step = 0.1;
@@ -76,22 +76,22 @@
             format-disabled = "<span font='14'>󰂲</span>";
             format-connected = "<span font='14'></span>";
             format-no-controller = "<span font='14'>󰂲</span>";
-            tooltip = true;  
+            tooltip = true;
             tooltip-format = "Bluetooth Status: {status}\nDevice: {device_alias}\nBattery: {device_battery_percentage}%";
-            tooltip-format-off = "Bluetooth is off!";  
+            tooltip-format-off = "Bluetooth is off!";
             tooltip-format-on = "No devices connected!";
-            tooltip-format-disabled = "Bluetooth is disabled!";    
-            tooltip-format-connected = "Connected: {device_alias}\nBattery: {device_battery_percentage}%"; 
+            tooltip-format-disabled = "Bluetooth is disabled!";
+            tooltip-format-connected = "Connected: {device_alias}\nBattery: {device_battery_percentage}%";
             tooltip-format-no-controller = "No Bluetooth controller found!";
-            on-click = "bluetoothctl power on"; 
-            on-click-right = "bluetoothctl power off";  
+            on-click = "bluetoothctl power on";
+            on-click-right = "bluetoothctl power off";
             on-click-middle = "bluetoothctl connect 28:FA:19:20:90:1D";
           };
           network = {
             format = "";
             format-disconnected = "";
             tooltip = true;
-            tooltip-format = "{bandwidthDownBytes} ↓ {bandwidthUpBytes} ↑";           
+            tooltip-format = "{bandwidthDownBytes} ↓ {bandwidthUpBytes} ↑";
             interval = 1;
             interface = "enp6s0";
           };
@@ -142,7 +142,7 @@
           "custom/screenshot" = {
             format = "󰹑";
             tooltip = true;
-            tooltip-format = "Screenshot of selected area on left click | Screenshot of fullscreen on right click"; 
+            tooltip-format = "Screenshot of selected area on left click | Screenshot of fullscreen on right click";
             on-click = "wayshot";
             on-click-right = "hyprshot";
           };
@@ -153,7 +153,7 @@
             on-click = "/etc/nixos/gui/wm/waybar/nix-clean.sh";
           };
         }
-      ];  
+      ];
       style = ''
         ${builtins.readFile ./style/style.css}
       '';

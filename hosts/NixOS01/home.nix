@@ -50,13 +50,6 @@ in {
     };
   };
 
-  # Install & Configure Git
-  programs.git = {
-    enable = true;
-    userName = "${gitUsername}";
-    userEmail = "${gitEmail}";
-  };
-
   # Create XDG Dirs
   xdg = {
     userDirs = {

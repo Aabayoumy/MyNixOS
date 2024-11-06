@@ -2,6 +2,7 @@
   imports = [
     ./zsh.nix
     ./tmux.nix
+    ./git.nix
     ./fzf.nix
     ./fastfetch
   ];
