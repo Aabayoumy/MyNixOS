@@ -15,7 +15,7 @@ in {
     #    ../../modules/amd-drivers.nix
     # ../../modules/nvidia/default.nix
     ../../modules/nvidia-drivers.nix
-    ../../modules/games.nix
+    # ../../modules/games.nix
     #   ../../modules/nvidia-prime-drivers.nix
     #  ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
@@ -410,6 +410,8 @@ in {
     extraBackends = [pkgs.sane-airscan];
     disabledDefaultBackends = ["escl"];
   };
+
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # Extra Logitech Support
   hardware.logitech.wireless.enable = false;
