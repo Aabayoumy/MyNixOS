@@ -9,7 +9,7 @@
   # Waybar Settings
   clock24h = false;
   hyprlandbar = "waybar";
-  bartheme = "2";
+  bartheme = "1";
 
   # Program Options
   browser = "librewolf"; # Set Default Browser (google-chrome-stable for google-chrome)

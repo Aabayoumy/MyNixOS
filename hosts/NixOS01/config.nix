@@ -261,6 +261,8 @@ in {
     rsync
     dtrx
     base16-schemes
+    sddm
+    clairvoyance                        # SDDM greeter theme
   ];
 
   fonts = {
@@ -326,7 +328,22 @@ in {
   # Services to start
   services = {
     xserver = {
-      enable = false;
+      enable = true;
+      displayManager = {
+        sessionCommands = ''
+          xmodmap .Xmodmap
+          xmodmap -e "keycode 110 = Prior"
+          xmodmap -e "keycode 115 = Next"
+          xmodmap -e "keycode 112 = Home"
+          xmodmap -e "keycode 117 = End"
+        '';
+        sddm.enable = true;             # Login screen manager
+        sddm.theme = "clairvoyance";    # Clairvoyance theme for sddm
+        #sddm.settings = ''
+        #  [General]
+        #  InputMethod=
+        #'';
+      };
       xkb = {
         layout = "us,ara";
         variant = "digits";
@@ -334,7 +351,7 @@ in {
       };
     };
     greetd = {
-      enable = true;
+      enable = false;
       vt = 3;
       settings = {
         default_session = {
