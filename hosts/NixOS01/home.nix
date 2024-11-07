@@ -14,6 +14,10 @@ in {
   # Import Program Configurations
   imports = [
     ../../config/cli
+    ../../config/emoji.nix
+    ../../config/rofi/rofi.nix
+    ../../config/rofi/config-emoji.nix
+    ../../config/rofi/config-long.nix
     ../../config/wm/${wm}
     ../../config/neovim.nix
     ../../config/browser/${browser}.nix
@@ -40,12 +44,6 @@ in {
     early_exit=true
     fill_shape=false
   '';
-
-  features = {
-    cli = {
-      fzf.enable = true;
-    };
-  };
 
   # Create XDG Dirs
   xdg = {
