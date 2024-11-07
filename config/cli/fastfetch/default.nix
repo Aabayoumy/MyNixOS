@@ -112,4 +112,5 @@
     # };
   };
   home.file.".config/fastfetch/config.jsonc".source = ./config.jsonc;
+  home.file.".config/fastfetch/nixos.png".source = ./nixos.png;
 }
