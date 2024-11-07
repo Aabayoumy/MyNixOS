@@ -66,9 +66,6 @@
           }
         ];
       };
-    };
-
-    nixosConfigurations = {
       "NixOS01" = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs;
