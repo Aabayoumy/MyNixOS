@@ -25,6 +25,7 @@ in {
   services.qemuGuest.enable = true;
 
   system.autoUpgrade.enable = true;
+  nixpkgs.config.allowUnfree = true;
 
   networking.hostName = host;
   networking.networkmanager.enable = true;
@@ -76,6 +77,8 @@ in {
     variant = "";
   };
 
+  vm.guest-services.enable = true;
+  local.hardware-clock.enable = false;
   environment.systemPackages = with pkgs; [
     nfs-utils
     zsh

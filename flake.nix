@@ -16,33 +16,49 @@
   };
 
   outputs = {
+    self,
     nixpkgs,
     home-manager,
     alejandra,
     ...
   } @ inputs: let
-    system = "x86_64-linux";
-    host = "NixOS01";
+    inherit (self) outputs;
+    systems = [
+      "aarch64-linux"
+      "i686-linux"
+      "x86_64-linux"
+      "aarch64-darwin"
+      "x86_64-darwin"
+    ];
+    forAllSystems = nixpkgs.lib.genAttrs systems;
+    # system = "x86_64-linux";
+    host = "HTPC";
     username = "abayoumy";
   in {
+    packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
+
+    overlays = import ./overlays {inherit inputs;};
+
     nixosConfigurations = {
       "${host}" = nixpkgs.lib.nixosSystem {
         specialArgs = {
-          inherit system;
+          # inherit system;
           inherit inputs;
+          inherit outputs;
           inherit username;
           inherit host;
         };
         modules = [
           ./hosts/${host}/config.nix
-          {environment.systemPackages = [alejandra.defaultPackage.${system}];}
+          {environment.systemPackages = [alejandra.defaultPackage.x86_64-linux];}
           inputs.stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
           {
             home-manager.extraSpecialArgs = {
               inherit username;
               inherit inputs;
-              inherit system;
+              inherit outputs;
+              # inherit system;
               inherit host;
             };
             home-manager.useGlobalPkgs = true;

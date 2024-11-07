@@ -70,7 +70,6 @@ in {
   stylix.targets.rofi.enable = false;
   stylix.targets.hyprland.enable = false;
   stylix.targets.kitty.enable = true;
-  stylix.targets.wezterm.enable = false;
   gtk = {
     iconTheme = {
       name = "Papirus-Dark";
@@ -100,6 +99,7 @@ in {
       inherit username;
     })
     (import ../../scripts/web-search.nix {inherit pkgs;})
+    (import ../../scripts/update-input.nix {inherit pkgs;})
     (import ../../scripts/rofi-launcher.nix {inherit pkgs;})
     (import ../../scripts/screenshootin.nix {inherit pkgs;})
     (import ../../scripts/list-hypr-bindings.nix {
