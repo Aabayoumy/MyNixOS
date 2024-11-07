@@ -14,6 +14,7 @@ in {
   imports = [
     ./hardware.nix
     ./users.nix
+    ./servies.nix
     #    ../../modules/amd-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
@@ -21,6 +22,7 @@ in {
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
+  zramSwap.enable = true;
   # enable qemu-guest-agentfor proxmox
   services.qemuGuest.enable = true;
 

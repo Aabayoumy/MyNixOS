@@ -32,7 +32,7 @@
     ];
     forAllSystems = nixpkgs.lib.genAttrs systems;
     # system = "x86_64-linux";
-    host = "HTPC";
+
     username = "abayoumy";
   in {
     packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
@@ -40,16 +40,15 @@
     overlays = import ./overlays {inherit inputs;};
 
     nixosConfigurations = {
-      "${host}" = nixpkgs.lib.nixosSystem {
+      "HTPC" = nixpkgs.lib.nixosSystem {
         specialArgs = {
-          # inherit system;
           inherit inputs;
           inherit outputs;
           inherit username;
-          inherit host;
+          host = "HTPC";
         };
         modules = [
-          ./hosts/${host}/config.nix
+          ./hosts/HTPC/config.nix
           {environment.systemPackages = [alejandra.defaultPackage.x86_64-linux];}
           inputs.stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
@@ -58,13 +57,41 @@
               inherit username;
               inherit inputs;
               inherit outputs;
-              # inherit system;
-              inherit host;
+              host = "HTPC";
             };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "backup";
-            home-manager.users.${username} = import ./hosts/${host}/home.nix;
+            home-manager.users.${username} = import ./hosts/HTPC/home.nix;
+          }
+        ];
+      };
+    };
+
+    nixosConfigurations = {
+      "NixOS01" = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs;
+          inherit outputs;
+          inherit username;
+          host = "NixOS01";
+        };
+        modules = [
+          ./hosts/NixOS01/config.nix
+          {environment.systemPackages = [alejandra.defaultPackage.x86_64-linux];}
+          inputs.stylix.nixosModules.stylix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.extraSpecialArgs = {
+              inherit username;
+              inherit inputs;
+              inherit outputs;
+              host = "NixOS01";
+            };
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
+            home-manager.users.${username} = import ./hosts/NixOS01/home.nix;
           }
         ];
       };
