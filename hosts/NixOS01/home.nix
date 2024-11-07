@@ -4,7 +4,7 @@
   host,
   ...
 }: let
-  inherit (import ./variables.nix) gitUsername gitEmail browser terminal;
+  inherit (import ./variables.nix) gitUsername gitEmail browser terminal wm;
 in {
   # Home Manager Settings
   home.username = "${username}";
@@ -14,7 +14,7 @@ in {
   # Import Program Configurations
   imports = [
     ../../config/cli
-    ../../config/hyprland
+    ../../config/wm/${wm}
     ../../config/neovim.nix
     ../../config/browser/${browser}.nix
     ../../config/terminals/${terminal}
@@ -25,10 +25,7 @@ in {
     source = ../../config/wallpapers;
     recursive = true;
   };
-  home.file.".config/hyprland/wlogout/icons" = {
-    source = ../../config/hyprland/wlogout;
-    recursive = true;
-  };
+
   home.file.".face.icon".source = ../../config/face.jpg;
   home.file.".config/face.jpg".source = ../../config/face.jpg;
   home.file.".config/swappy/config".text = ''

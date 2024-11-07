@@ -7,7 +7,7 @@
 }: let
   tomlFormat = pkgs.formats.toml {};
   inherit
-    (import ../../hosts/${host}/variables.nix)
+    (import ../../../hosts/${host}/variables.nix)
     terminal
     ;
 in

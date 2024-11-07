@@ -12,7 +12,6 @@
     group = "users";
     dataDir = "/media/MediaHDD/HTPC/plex";
   };
-
   services.sonarr = {
     enable = true;
     openFirewall = true;

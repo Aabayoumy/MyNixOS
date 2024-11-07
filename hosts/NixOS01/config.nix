@@ -7,7 +7,7 @@
   options,
   ...
 }: let
-  inherit (import ./variables.nix) keyboardLayout;
+  inherit (import ./variables.nix) keyboardLayout wm;
 in {
   imports = [
     ./hardware.nix
@@ -20,6 +20,7 @@ in {
     #  ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
+    ./wm/${wm}
   ];
 
   zramSwap.enable = true;
@@ -177,7 +178,6 @@ in {
     gcal
     micro
     xsel
-    xwayland
     vscodium
     #vscode
     wget
@@ -197,8 +197,6 @@ in {
     ydotool
     duf
     ncdu
-    wl-clipboard
-    waypaper
     pciutils
     ffmpeg
     socat
@@ -208,7 +206,7 @@ in {
     bat
     pkg-config
     meson
-    hyprpicker
+
     ninja
     brightnessctl
     virt-viewer
@@ -222,11 +220,10 @@ in {
     nixfmt-rfc-style
     discord
     libvirt
-    swww
     grim
     slurp
     file-roller
-    swaynotificationcenter
+
     imv
     mpv
     wev
@@ -310,7 +307,7 @@ in {
   # Services to start
   services = {
     xserver = {
-      enable = false;
+      enable = lib.mkDefault false;
       xkb = {
         layout = "us,ara";
         variant = "digits";
