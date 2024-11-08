@@ -19,6 +19,7 @@ in {
     ../../config/rofi/config-emoji.nix
     ../../config/rofi/config-long.nix
     ../../config/wm/${wm}
+    ../../config/wm/gnome
     ../../config/neovim.nix
     ../../config/browser/${browser}.nix
     ../../config/terminals/${terminal}
@@ -61,27 +62,9 @@ in {
   };
 
   # Styling Options
-  stylix.targets.waybar.enable = false;
-  stylix.targets.rofi.enable = false;
-  stylix.targets.hyprland.enable = false;
+  stylix.autoEnable = false;
   stylix.targets.kitty.enable = true;
-  gtk = {
-    iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-    gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
-    gtk4.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
-  };
-  qt = {
-    enable = true;
-    style.name = "adwaita-dark";
-    platformTheme.name = "gtk3";
-  };
+
 
   # Scripts
   home.packages = [

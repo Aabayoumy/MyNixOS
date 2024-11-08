@@ -19,24 +19,24 @@ $HOME/.config/polybar/launch.sh &
 #change your keyboard if you need it
 #setxkbmap -layout be
 
-keybLayout=$(setxkbmap -v | awk -F "+" '/symbols/ {print $2}')
+# keybLayout=$(setxkbmap -v | awk -F "+" '/symbols/ {print $2}')
 
-if [ $keybLayout = "be" ]; then
-  run sxhkd -c ~/.config/bspwm/sxhkd/sxhkdrc-azerty &
-else
-  run sxhkd -c ~/.config/bspwm/sxhkd/sxhkdrc &
-fi
+# if [ $keybLayout = "be" ]; then
+#   run sxhkd -c ~/.config/bspwm/sxhkd/sxhkdrc-azerty &
+# else
+#   run sxhkd -c ~/.config/bspwm/sxhkd/sxhkdrc &
+# fi
 
 run variety &
 run nm-applet &
 numlockx on &
-blueberry-tray &
+# blueberry-tray &
 picom --config $HOME/.config/bspwm/picom.conf &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 run volumeicon &
-#nitrogen --restore &
+nitrogen --restore &
 #run firefox &
-#run thunar &
+run thunar &
 #run dropbox &
 #run insync start &
 #run discord &

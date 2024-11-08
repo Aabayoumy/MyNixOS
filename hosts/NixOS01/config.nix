@@ -15,12 +15,13 @@ in {
     #    ../../modules/amd-drivers.nix
     # ../../modules/nvidia/default.nix
     ../../modules/nvidia-drivers.nix
-    # ../../modules/games.nix
+    ../../modules/games.nix
     #   ../../modules/nvidia-prime-drivers.nix
     #  ../../modules/intel-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
     ./wm/${wm}
+    ./wm/gnome
   ];
 
   zramSwap.enable = true;
@@ -240,8 +241,6 @@ in {
     rsync
     dtrx
     base16-schemes
-    sddm-kcm
-    elegant-sddm
   ];
 
   fonts = {
@@ -306,25 +305,18 @@ in {
 
   # Services to start
   services = {
-    xserver = {
-      enable = lib.mkDefault false;
-      xkb = {
-        layout = "us,ara";
-        variant = "digits";
-        options = "alt_shift_toggle,caps:escape";
-      };
-    };
-    displayManager = {
-      sddm = {
-        enable = true;
-        theme = "Elegant";
-        autoNumlock = true;
-        wayland = {
-          enable = true;
-          compositor = "kwin";
-        };
-      };
-    };
+    # displayManager = {
+    #   sddm = {
+    #     enable = true;
+    #     theme = "Elegant";
+    #     autoNumlock = true;
+    #     wayland = {
+    #       enable = true;
+    #       compositor = "kwin";
+    #     };
+    #   };
+    # };
+
     greetd = {
       enable = false;
       vt = 3;

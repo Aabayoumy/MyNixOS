@@ -4,7 +4,7 @@
   gitEmail = "abayoumy@outlook.com";
 
   wm = "hyprland";
-  
+
   # Hyprland Settings
   extraMonitorSettings = "";
 
