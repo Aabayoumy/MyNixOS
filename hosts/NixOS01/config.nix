@@ -306,7 +306,7 @@ in {
       defaultSession = "plasma";
       sddm = {
         enable = true;
-        theme = "elegant";
+        theme = "Elegant";
         autoNumlock = true;
         wayland = {
           enable = true;
