@@ -21,7 +21,7 @@ in {
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
     ./wm/${wm}
-    ./wm/gnome
+    ./wm/kde
   ];
 
   zramSwap.enable = true;
@@ -241,6 +241,8 @@ in {
     rsync
     dtrx
     base16-schemes
+    kdePackages.sddm-kcm
+    elegant-sddm
   ];
 
   fonts = {
@@ -288,34 +290,30 @@ in {
       ];
     };
   };
-
-  # xdg.portal = {
-  #   enable = true;
-  #   wlr.enable = true;
-  #   extraPortals = [
-  #     pkgs.xdg-desktop-portal-gtk
-  #     pkgs.xdg-desktop-portal
-  #   ];
-  #   configPackages = [
-  #     pkgs.xdg-desktop-portal-gtk
-  #     pkgs.xdg-desktop-portal-hyprland
-  #     pkgs.xdg-desktop-portal
-  #   ];
-  # };
-
   # Services to start
+
   services = {
-    # displayManager = {
-    #   sddm = {
-    #     enable = true;
-    #     theme = "Elegant";
-    #     autoNumlock = true;
-    #     wayland = {
-    #       enable = true;
-    #       compositor = "kwin";
-    #     };
-    #   };
-    # };
+    xserver = {
+      enable = true;
+      videoDrivers = ["nvidia"];
+      xkb = {
+        layout = "us,ara";
+        # variant = "digits";
+        options = "alt_shift_toggle,caps:escape";
+      };
+    };
+    displayManager = {
+      defaultSession = "plasma";
+      sddm = {
+        enable = true;
+        theme = "elegant";
+        autoNumlock = true;
+        wayland = {
+          enable = true;
+          compositor = "kwin";
+        };
+      };
+    };
 
     greetd = {
       enable = false;

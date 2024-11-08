@@ -29,9 +29,9 @@ in {
       gtk-application-prefer-dark-theme = 1;
     };
   };
-  qt = {
-    enable = true;
-    style.name = "adwaita-dark";
-    platformTheme.name = "gtk3";
-  };
+  # qt = {
+  #   enable = true;
+  #   style.name = "adwaita-dark";
+  #   platformTheme.name = "adwaita";
+  # };
 }

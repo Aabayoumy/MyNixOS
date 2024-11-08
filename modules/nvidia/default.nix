@@ -36,7 +36,10 @@
 
   boot = {
     kernelPackages = lib.mkForce pkgs.linuxKernel.packages.linux_zen;
-    kernelParams = ["nvidia-drm.fbdev=1"];
+    kernelParams = [
+      "nvidia-drm.fbdev=1"
+      "NVreg_EnableGpuFirmware=0"
+    ];
 
     extraModprobeConfig =
       "options nvidia "
