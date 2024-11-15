@@ -23,7 +23,7 @@ config.window_background_opacity = 0.8
 config.automatically_reload_config = true
 
 -- tmux
-config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 2000 }
+config.leader = { key = "a", mods = "ALT", timeout_milliseconds = 2000 }
 config.keys = {
     {
         mods = "LEADER",

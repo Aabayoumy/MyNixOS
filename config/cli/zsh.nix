@@ -57,5 +57,5 @@
   programs.fastfetch.enable = true;
   programs.starship.enable = true;
   programs.starship.enableZshIntegration = true;
-  home.file.".config/starship.toml".source = ./starship.toml;
+  home.file.".config/starship.toml".source = ./config/starship.toml;
 }
