@@ -1,6 +1,7 @@
 {
   pkgs,
   host,
+  inputs,
   ...
 }: let
   inherit (import ../../../hosts/${host}/variables.nix) hyprlandbar bartheme;
@@ -18,9 +19,18 @@ in {
     recursive = true;
   };
   gtk = {
+    enable = true;
     iconTheme = {
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
+    };
+    theme = {
+      name = "adw-gtk3-dark";
+      package = pkgs.adw-gtk3;
+    };
+    cursorTheme = {
+      name = "Numix-Cursor";
+      package = pkgs.numix-cursor-theme;
     };
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
@@ -29,9 +39,4 @@ in {
       gtk-application-prefer-dark-theme = 1;
     };
   };
-  # qt = {
-  #   enable = true;
-  #   style.name = "adwaita-dark";
-  #   platformTheme.name = "adwaita";
-  # };
 }

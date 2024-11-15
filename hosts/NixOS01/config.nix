@@ -12,16 +12,16 @@ in {
   imports = [
     ./hardware.nix
     ./users.nix
-    #    ../../modules/amd-drivers.nix
-    # ../../modules/nvidia/default.nix
+    ../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
+    ../../modules/libvirt.nix
     ../../modules/games.nix
-    #   ../../modules/nvidia-prime-drivers.nix
-    #  ../../modules/intel-drivers.nix
-    ../../modules/vm-guest-services.nix
+    ../../modules/net-share.nix
+    # ../../modules/nvidia-prime-drivers.nix
+    # ../../modules/intel-drivers.nix
+    # ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
     ./wm/${wm}
-    ./wm/kde
   ];
 
   zramSwap.enable = true;
@@ -39,6 +39,10 @@ in {
     # Bootloader.
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
+    supportedFilesystems = ["zfs"];
+    zfs.forceImportRoot = false;
+    zfs.extraPools = ["tank"];
+
     # Make /tmp a tmpfs
     tmp = {
       useTmpfs = false;
@@ -55,7 +59,7 @@ in {
     };
     plymouth.enable = true;
   };
-
+  nixpkgs.config.allowBroken = true;
   # Styling Options
   stylix = {
     enable = true;
@@ -110,14 +114,31 @@ in {
 
   # Extra Module Options
   drivers.nvidia.enable = true;
-  vm.guest-services.enable = true;
+  drivers.amdgpu.enable = true;
   local.hardware-clock.enable = false;
 
   # Enable networking
-  networking.networkmanager.enable = true;
-  networking.hostName = host;
-  networking.timeServers = options.networking.timeServers.default ++ ["pool.ntp.org"];
-
+  networking = {
+    networkmanager.enable = true;
+    hostName = host;
+    timeServers = options.networking.timeServers.default ++ ["pool.ntp.org"];
+    hostId = "4ef51e95";
+    nameservers = [
+      "9.9.9.9"
+      "149.112.112.112"
+      "1.1.1.3"
+    ];
+    # If using dhcpcd:
+    dhcpcd.extraConfig = "nohook resolv.conf";
+    # If using NetworkManager:
+    networkmanager.dns = "none";
+    defaultGateway = "10.0.0.1";
+    firewall.enable = false;
+    firewall.allowPing = true;
+    #syncThing
+    firewall.allowedTCPPorts = [8384 22000];
+    firewall.allowedUDPPorts = [22000 21027];
+  };
   # Set your time zone.
   time.timeZone = "Africa/Cairo";
 
@@ -139,7 +160,6 @@ in {
   };
 
   programs = {
-    hyprland.enable = true;
     firefox.enable = false;
     nix-ld = {
       enable = true;
@@ -179,16 +199,14 @@ in {
     gcal
     micro
     xsel
-    vscodium
-    #vscode
+    # vscodium
+    vscode
     wget
     killall
     eza
     git
     cmatrix
     lolcat
-    htop
-    libvirt
     lxqt.lxqt-policykit
     lm_sensors
     unzip
@@ -207,10 +225,8 @@ in {
     bat
     pkg-config
     meson
-
     ninja
     brightnessctl
-    virt-viewer
     swappy
     appimage-run
     networkmanagerapplet
@@ -220,11 +236,9 @@ in {
     nh
     nixfmt-rfc-style
     discord
-    libvirt
     grim
     slurp
     file-roller
-
     imv
     mpv
     wev
@@ -233,16 +247,16 @@ in {
     pavucontrol
     tree
     spotify
-    neovide
-    greetd.tuigreet
     starship
     zip
     unzip
     rsync
     dtrx
     base16-schemes
-    kdePackages.sddm-kcm
-    elegant-sddm
+    obsidian
+    syncthing
+    # kdePackages.sddm-kcm
+    # elegant-sddm
   ];
 
   fonts = {
@@ -260,11 +274,12 @@ in {
     ZANEYOS_VERSION = "2.2";
     ZANEYOS = "true";
     NIXOS_OZONE_WL = "1";
+    ROC_ENABLE_PRE_VEGA = "1";
     # Required to run the correct GBM backend for nvidia GPUs on wayland
-    GBM_BACKEND = "nvidia-drm";
+    #GBM_BACKEND = "nvidia-drm";
     # Apparently, without this nouveau may attempt to be used instead
     # (despite it being blacklisted)
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    # __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     # Hardware cursors are currently broken on nvidia
     WLR_NO_HARDWARE_CURSORS = "1";
   };
@@ -293,42 +308,72 @@ in {
   # Services to start
 
   services = {
+    btrfs.autoScrub.enable = true;
+    btrfs.autoScrub.interval = "weekly";
+    zfs.autoScrub.enable = true;
+    udisks2.enable = true;
+    udisks2.mountOnMedia = true;
     xserver = {
-      enable = true;
-      videoDrivers = ["nvidia"];
+      enable = false;
+      videoDrivers = ["amdgpu"];
       xkb = {
         layout = "us,ara";
         # variant = "digits";
         options = "alt_shift_toggle,caps:escape";
       };
     };
-    displayManager = {
-      defaultSession = "plasma";
-      sddm = {
-        enable = true;
-        theme = "Elegant";
-        autoNumlock = true;
-        wayland = {
-          enable = true;
-          compositor = "kwin";
+
+    openssh = {
+      enable = true;
+      ports = [22];
+      openFirewall = true;
+      settings = {
+        PasswordAuthentication = true;
+        AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
+        UseDns = true;
+        X11Forwarding = false;
+        PermitRootLogin = "prohibit-password";
+      };
+    };
+    syncthing = {
+      enable = true;
+      user = "${username}";
+      dataDir = "/tank/data/syncthing";
+      configDir = "/tank/data/syncthing/.config";
+      overrideDevices = false; # overrides any devices added or deleted through the WebUI
+      overrideFolders = false; # overrides any folders added or deleted through the WebUI
+      settings = {
+        devices = {
+          "gb-abayoumy" = {id = "QMCXML2-VQNKDOY-XCWDUVX-PGO6P43-XRE4T3R-HS4IM4Z-MSJ5CTJ-WZIDTQJ";};
         };
+        # folders = {
+        #   "obsidian" = {
+        #     # Name of folder in Syncthing, also the folder ID
+        #     path = "/tank/data/syncthing/obsidian"; # Which folder to add to Syncthing
+        #     devices = ["gb-abayoumy"]; # Which devices to share the folder with
+        #   };
+        # "Example" = {
+        #   path = "/home/myusername/Example";
+        #   devices = ["device1"];
+        #   ignorePerms = false; # By default, Syncthing doesn't sync file permissions. This line enables it for this folder.
+        # };
+        # };
       };
     };
 
-    greetd = {
-      enable = false;
-      vt = 3;
-      settings = {
-        default_session = {
-          # Wayland Desktop Manager is installed only for user ryan via home-manager!
-          user = username;
-          # .wayland-session is a script generated by home-manager, which links to the current wayland compositor(sway/hyprland or others).
-          # with such a vendor-no-locking script, we can switch to another wayland compositor without modifying greetd's config here.
-          # command = "$HOME/.wayland-session"; # start a wayland session directly without a login manager
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland"; # start Hyprland with a TUI login manager
-        };
-      };
-    };
+    # displayManager = {
+    #   # defaultSession = "plasma";
+    #   sddm = {
+    #     enable = true;
+    #     theme = "Elegant";
+    #     autoNumlock = true;
+    #     wayland = {
+    #       enable = true;
+    #       compositor = "kwin";
+    #     };
+    #   };
+    # };
+
     smartd = {
       enable = false;
       autodetect = true;
@@ -337,7 +382,7 @@ in {
     libinput.enable = true;
     fstrim.enable = true;
     gvfs.enable = true;
-    openssh.enable = true;
+    devmon.enable = true;
     flatpak.enable = true;
     printing = {
       enable = true;
@@ -352,21 +397,14 @@ in {
       openFirewall = true;
     };
     ipp-usb.enable = true;
-    syncthing = {
-      enable = false;
-      user = "${username}";
-      dataDir = "/home/${username}";
-      configDir = "/home/${username}/.config/syncthing";
-    };
     pipewire = {
       enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
     };
-    rpcbind.enable = true;
-    nfs.server.enable = true;
   };
+  systemd.services.zfs-mount.enable = true;
   systemd.services.flatpak-repo = {
     path = [pkgs.flatpak];
     script = ''
@@ -436,21 +474,18 @@ in {
     };
   };
 
-  # Virtualization / Containers
-  virtualisation.libvirtd.enable = false;
-  virtualisation.podman = {
-    enable = false;
-    dockerCompat = true;
-    defaultNetwork.settings.dns_enabled = true;
-  };
-
   # OpenGL
-  # hardware.graphics = {
-  #   enable = true;
-  #   enable32Bit = true;
-  # };
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = [
+      pkgs.rocmPackages.clr
+      pkgs.rocmPackages.rocm-smi
+    ];
+  };
 
   console.keyMap = "en";
 
+  system.autoUpgrade.enable = true;
   system.stateVersion = "24.05"; # Did you read the comment?
 }

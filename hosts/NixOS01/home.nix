@@ -19,7 +19,6 @@ in {
     ../../config/rofi/config-emoji.nix
     ../../config/rofi/config-long.nix
     ../../config/wm/${wm}
-    # ../../config/wm/gnome
     ../../config/neovim.nix
     ../../config/browser/${browser}.nix
     ../../config/terminals/${terminal}
@@ -63,7 +62,6 @@ in {
 
   # Styling Options
   stylix.autoEnable = false;
-  stylix.targets.kitty.enable = true;
 
   # Scripts
   home.packages = [

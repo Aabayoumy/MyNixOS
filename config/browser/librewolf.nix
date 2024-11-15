@@ -7,28 +7,18 @@
   };
 
   home.file.".librewolf/librewolf.overrides.cfg".text = ''
-    defaultPref("font.name.serif.x-western","JetBrainsMono Nerd Font Mono");
-
-    defaultPref("identity.fxaccounts.enabled", true);
-    defaultPref("font.size.variable.x-western",20);
-    defaultPref("browser.toolbars.bookmarks.visibility","always");
-    defaultPref("privacy.resisttFingerprinting.letterboxing", true);
-    defaultPref("network.http.referer.XOriginPolicy",2);
-    defaultPref("privacy.clearOnShutdown.history",false);
-    defaultPref("privacy.clearOnShutdown.downloads",false);
-    defaultPref("privacy.clearOnShutdown.cookies",false);
-    defaultPref("gfx.webrender.software.opengl",false);
-    defaultPref("webgl.disabled",true);
-    pref("font.name.serif.x-western","JetBrainsMono Nerd Font Mono");
-    pref("font.size.variable.x-western",20);
+    pref("identity.fxaccounts.enabled", true);
     pref("browser.toolbars.bookmarks.visibility","always");
-    pref("privacy.resisttFingerprinting.letterboxing", true);
+    pref("privacy.resisttFingerprinting.letterboxing", false);
     pref("network.http.referer.XOriginPolicy",2);
-    pref("privacy.clearOnShutdown.history",true);
-    pref("privacy.clearOnShutdown.downloads",true);
-    pref("privacy.clearOnShutdown.cookies",true);
+    pref("privacy.clearOnShutdown.history",false);
+    pref("privacy.clearOnShutdown.downloads",false);
+    pref("privacy.clearOnShutdown.cookies",false);
     pref("gfx.webrender.software.opengl",false);
     pref("webgl.disabled",true);
+    pref("font.name.serif.x-western","JetBrainsMono Nerd Font Mono");
+    pref("font.size.variable.x-western",18);
+
 
     pref("network.trr.mode", 2);
     pref("network.trr.uri", "https://dns.quad9.net/dns-query"); // Current 'reasonable default': No Filering

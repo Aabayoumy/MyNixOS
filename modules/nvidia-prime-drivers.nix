@@ -9,13 +9,13 @@ with lib; let
 in {
   options.drivers.nvidia-prime = {
     enable = mkEnableOption "Enable Nvidia Prime Hybrid GPU Offload";
-    intelBusID = mkOption {
+    amdBusID = mkOption {
       type = types.str;
-      default = "PCI:1:0:0";
+      default = "PCI:7:0:0";
     };
     nvidiaBusID = mkOption {
       type = types.str;
-      default = "PCI:0:2:0";
+      default = "PCI:1:0:0";
     };
   };
 
@@ -27,7 +27,7 @@ in {
           enableOffloadCmd = true;
         };
         # Make sure to use the correct Bus ID values for your system!
-        intelBusId = "${cfg.intelBusID}";
+        amdBusId = "${cfg.amdBusID}";
         nvidiaBusId = "${cfg.nvidiaBusID}";
       };
     };

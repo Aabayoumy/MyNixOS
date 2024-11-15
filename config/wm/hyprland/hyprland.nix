@@ -3,6 +3,7 @@
   username,
   host,
   config,
+  inputs,
   pkgs,
   ...
 }: let
@@ -18,7 +19,9 @@ in
     wayland.windowManager.hyprland = {
       enable = true;
       xwayland.enable = true;
-      package = pkgs.hyprland.override {wrapRuntimeDeps = false;};
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      # package = pkgs.hyprland.override {wrapRuntimeDeps = false;};
       systemd = {
         enable = true;
         extraCommands = lib.mkBefore [
@@ -35,6 +38,8 @@ in
           "WLR_NO_HARDWARE_CURSORS, 1"
           "WLR_RENDERER_ALLOW_SOFTWARE, 1"
           "QT_QPA_PLATFORM, wayland"
+          "WLR_DRM_DEVICES, /dev/dri/card0:/dev/dri/card1"
+          "force_no_accel, 0"
         ];
       };
       extraConfig = let
@@ -56,8 +61,9 @@ in
             exec-once = killall -q swaync;sleep .5 && swaync
             exec-once = nm-applet --indicator
             exec-once = lxqt-policykit-agent
-            exec-once = sleep 1.5 && waypaper --wallpaper ~/.wallpaper
+            exec-once = sleep 1.5 && waypaper --restore
             exec-once = hypridle
+            exec-once = clipse -liste
             # monitor=,preferred,auto,1
             # unscale XWayland
             xwayland {
@@ -73,19 +79,6 @@ in
               col.active_border = rgb(${config.stylix.base16Scheme.base08}) rgb(${config.stylix.base16Scheme.base0C}) 45deg
               col.inactive_border = rgb(${config.stylix.base16Scheme.base01})
             }
-            # input {
-            #   kb_layout = ${keyboardLayout}
-            #   kb_options = grp:alt_shift_toggle
-            #   kb_options = caps:super
-            #   follow_mouse = 1
-            #   touchpad {
-            #     natural_scroll = true
-            #     disable_while_typing = true
-            #     scroll_factor = 0.8
-            #   }
-            #   sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
-            #   accel_profile = flat
-            # }
 
             windowrule = noborder,^(wofi)$
             windowrule = center,^(wofi)$
@@ -124,18 +117,21 @@ in
               animation = workspaces, 1, 5, wind
             }
             decoration {
-              rounding = 0
-              drop_shadow = true
-              shadow_range = 4
-              shadow_render_power = 3
-              col.shadow = rgba(1a1a1aee)
-              blur {
-                  enabled = true
-                  size = 5
-                  passes = 3
-                  new_optimizations = on
-                  ignore_opacity = off
+              shadow{
+              enabled = true
+              range = 5
+              render_power = 3
+              color = rgba(1a1a1aee)
               }
+            rounding = 5
+
+            blur {
+                enabled = true
+                size = 5
+                passes = 3
+                new_optimizations = on
+                ignore_opacity = off
+            }
             }
             plugin {
               hyprtrails {
@@ -147,6 +143,7 @@ in
             }
             bind = ${modifier},Return,exec,${terminal}
             bind = ${modifier},Super_L,exec, killall rofi || rofi -show drun
+            bind = ${modifier},V, exec, ${terminal} --class clipse -e clipse
             bind = ${modifier},W, exec, waypaper
             bind = ${modifier} SHIFT,W,exec,wallsetter
             bind = ${modifier} SHIFT,N,exec,swaync-client -rs
@@ -215,7 +212,7 @@ in
             bind = ALT,Tab,bringactivetotop
             bind = ,XF86AudioRaiseVolume,exec,wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
             bind = ,XF86AudioLowerVolume,exec,wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-            binde = ,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+            bind = ,XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
             bind = ,XF86AudioPlay, exec, playerctl play-pause
             bind = ,XF86AudioPause, exec, playerctl play-pause
             bind = ,XF86AudioNext, exec, playerctl next
@@ -234,7 +231,7 @@ in
       language = en
       folder = ~/.wallpapers
       monitors = All
-      wallpaper = ~/.wallpapers/planet-space-abstract-background-digital-art-4k-wallpaper-uhdpaper.com-234@0@g.jpg
+      wallpaper = ~/Pictures/Wallpapers
       backend = swww
       fill = fill
       sort = name
@@ -255,7 +252,7 @@ in
 
     home.file.".config/hypr/monitors.conf".text = ''
       monitor=HDMI-A-1,1920x1080@74.97,0x0,1.0
-      monitor=DP-1,2560x1440@120,1920x0,1.0
+      monitor=DP-1,2560x1440@164.84,1920x0,1.0
     '';
 
     home.file.".config/hypr/workspaces.conf".text = ''
@@ -280,10 +277,12 @@ in
         repeat_rate=50
         repeat_delay=300
         numlock_by_default=1
+        force_no_accel=0
         left_handed=0
         follow_mouse=1
         float_switch_override_focus=0
         # sensitivity = -0.5 to 0.5
       }
+
     '';
   }

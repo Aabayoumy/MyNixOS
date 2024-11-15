@@ -1,11 +1,12 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   services = {
     xserver = {
-      enable = true;
+      enable = lib.mkForce true;
       xkb = {
         layout = "us,ara";
         # variant = "digits";

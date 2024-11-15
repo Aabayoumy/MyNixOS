@@ -8,6 +8,12 @@
     stylix.url = "github:danth/stylix";
     alejandra.url = "github:kamadorueda/alejandra/3.0.0";
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
+    wezterm.url = "github:wez/wezterm?dir=nix";
 
     fine-cmdline = {
       url = "github:VonHeikemen/fine-cmdline.nvim";

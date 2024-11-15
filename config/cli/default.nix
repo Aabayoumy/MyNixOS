@@ -31,5 +31,11 @@
     ripgrep
     tldr
     zip
+    unzip
   ];
+
+  home.file.".config" = {
+    source = ./config;
+    recursive = true;
+  };
 }
