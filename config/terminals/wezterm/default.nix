@@ -1,6 +1,6 @@
 # source https://haseebmajid.dev/posts/2024-01-05-part-4-wezterm-terminal-as-part-of-your-development-workflow/
 {
-  input,
+  inputs,
   pkgs,
   ...
 }: {
